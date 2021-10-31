@@ -13,7 +13,8 @@ from typing import Optional, List
 app = FastAPI()
 myclient = MongoClient("mongodb://localhost:27017/")
 mydb = myclient["local"]
-mycol = mydb["Restaurants"]
+mycol = mydb["Restaurants4"]
+allergens = ["milk", "eggs", "bass", "salmon", "cod", "crab", "lobster", "shrimp", "almonds", "walnuts", "pecans", "peanuts", "wheat", "soy", "ham", "bacon", "sausage", "steak", "chicken", "turkey", "cheese"]
 
 class PyObjectId(ObjectId):
     @classmethod
@@ -46,11 +47,11 @@ class RestaurantModel(BaseModel):
 class OneRestaurantModel(BaseModel):
     
     restaurant_name: str
-    meals: list
+    meals: dict
 
 
 
-@app.get("/", response_description="List all students", response_model=List[RestaurantModel])
+@app.get("/", response_description="List all restaurants", response_model=List[RestaurantModel])
 def read_root():
 
     info = []
@@ -66,20 +67,24 @@ def read_root():
 
     return info
 
-@app.get("/api/{restaurant}/", response_description="Show Searched Restaurant", response_model=OneRestaurantModel)
+@app.get("/api/{restaurant}/", response_description="Show meals from searched restaurant", response_model=OneRestaurantModel)
 def get_restaurant(restaurant: str):
     """Return food from restaurant"""
 
     if (x := mycol.find_one({"restaurant_name": restaurant}, {"_id": 0})) is None:
       raise HTTPException(status_code=404, detail=f"Restaurant {restaurant} not found")
 
-    meals = []
-    menu = x["menus"][0]["menu_sections"][0]
-    print(menu)
+    meals = {}
     for a in x["menus"]:
       for b in a["menu_sections"]:
         for i in b["menu_items"]:
-          meals.append("{} {}".format(i["name"], i["description"]))
+          newMeal = "{} {}".format(i["name"], i["description"])
+          newMeal = newMeal.lower()
+          meals[newMeal] = []
+          for allergen in allergens:
+            if newMeal.find(allergen) > 0:
+              meals[newMeal].append(allergen)
+          # meals.append(newMeal)
     
     info = {
       "restaurant_name": restaurant,
