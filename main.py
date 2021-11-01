@@ -11,11 +11,16 @@ from pydantic import BaseModel, Field, EmailStr
 from typing import Optional, List
 
 app = FastAPI()
+
+# Handling MongoDB connection 
 myclient = MongoClient("mongodb://localhost:27017/")
 mydb = myclient["local"]
 mycol = mydb["Restaurants4"]
-allergens = ["milk", "eggs", "bass", "salmon", "cod", "crab", "lobster", "shrimp", "almonds", "walnuts", "pecans", "peanuts", "wheat", "soy", "ham", "bacon", "sausage", "steak", "chicken", "turkey", "cheese"]
 
+# List of allergens to check against 
+allergens = ["milk", "eggs", "bass", "salmon", "cod", "crab", "lobster", "shrimp", "almonds", "walnuts", "pecans", "peanuts", "wheat", "soy", "ham", "bacon", "sausage", "steak", "chicken", "turkey", "cheese", "sunflower", "sesame", "poppy"]
+
+# Models to handle BSON data returned by MongoDB
 class PyObjectId(ObjectId):
     @classmethod
     def __get_validators__(cls):
@@ -50,44 +55,41 @@ class OneRestaurantModel(BaseModel):
     meals: dict
 
 
-
+# Base root returns the names of all of the restaurants in the database
 @app.get("/", response_description="List all restaurants", response_model=List[RestaurantModel])
 def read_root():
+    """returns the names of all of the restaurants in the database"""
 
     info = []
-    # mycol.find({"price_range_num":{'$gte':0}}, {"_id": 0})
-
     for x in mycol.find({"price_range_num":{'$gte':0}}, {"_id": 0}):
       print(x["restaurant_name"])
       info.append(x)
-    # pprint(x)
-    # print(x)
-    # testO = {"Hello": [1, 2, 3, 4, 5]}
-    # jsonItem = jsonable_encoder(x)
-
     return info
 
+# Restaurant endpoint returns the restaurant name, meals, and potential allergens of the searched restaurant
 @app.get("/api/{restaurant}/", response_description="Show meals from searched restaurant", response_model=OneRestaurantModel)
 def get_restaurant(restaurant: str):
-    """Return food from restaurant"""
+    """Returns the restaurant name, meals, and potential allergens of the searched restaurant"""
 
-    if (x := mycol.find_one({"restaurant_name": restaurant}, {"_id": 0})) is None:
+    # Return 404 if the restaurant is not in our database
+    if (x := mycol.find_one({"restaurant_name": { "$regex": restaurant, "$options" :'i' }}, {"_id": 0})) is None:
       raise HTTPException(status_code=404, detail=f"Restaurant {restaurant} not found")
 
+    # Sort through data from the database to format data and return info above
     meals = {}
     for a in x["menus"]:
       for b in a["menu_sections"]:
         for i in b["menu_items"]:
-          newMeal = "{} {}".format(i["name"], i["description"])
-          newMeal = newMeal.lower()
-          meals[newMeal] = []
+          newMeal = i["name"].lower()
+          newDesc = i["description"].lower()
+          fullMeal = "{} {}".format(i["name"], i["description"])
+          meals[newMeal] = {"allergens": [], "description": newDesc}
           for allergen in allergens:
-            if newMeal.find(allergen) > 0:
-              meals[newMeal].append(allergen)
-          # meals.append(newMeal)
+            if fullMeal.find(allergen) > 0:
+              meals[newMeal]["allergens"].append(allergen)
     
     info = {
-      "restaurant_name": restaurant,
+      "restaurant_name": x["restaurant_name"],
       "meals": meals
     }
 
