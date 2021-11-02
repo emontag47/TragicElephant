@@ -19,7 +19,6 @@ $("#search").click(function () {
 
 $("#search").click(function() {
     var rest = $("#restaurantName").value;
-
 });
 
 
@@ -33,7 +32,9 @@ var app = new Vue({
                 {allergens: ["sesame", "sausage"],
                  description: "A sausage muffin thing"},
                 {allergens: ["egg", "almonds"],
-                 description: "Almond shaving omelet"}
+                 description: "Almond shaving omelet"},
+                {allergens: [],
+                 description: "A completely allergy-free pancake"}
              ]},
 
         ]
@@ -50,7 +51,6 @@ var app = new Vue({
                 .catch((error) =>{
                     console.log(error);
                 });
-
         }
     }
 });

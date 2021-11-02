@@ -48,19 +48,28 @@
             <ul class="valid-restaurants">
                 <li v-for="restaurant in results">
                     <div class="container-fluid"> 
+                        
                         {{restaurant.restaurant_name}}
+                        
                         <ul>
+
                             <li v-for="meal in restaurant.meals">
-                            {{meal.description}}
-                            <ul>
-                                <li v-for="allergen in meal.allergens">
-                                {{allergen}}
-                                </li>
-                            </ul>
+                            <div class="row">
+                                <div class="col-5">
+                                    {{meal.description}}
+                                    <span class="badge badge-success" v-if="meal.allergens.length === 0">Allergy-free</span>
+                                    <span class="badge badge-danger" v-else>Allergy</span>
+                                </div>
+                                <div class="col-7">
+                                    <ul class="list-group" ref="{meal.description}">
+                                        <li class="list-group-item list-group-item-warning" v-for="allergen in meal.allergens">
+                                        {{allergen}}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                             </li>
-
                         </ul>
-
                     <div>
                 <li>
             </ul>
