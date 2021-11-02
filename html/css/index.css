@@ -1,0 +1,39 @@
+.allergen:hover {
+    background-color: red;
+}
+.allergen-clicked {
+    background-color: aqua;
+}
+#results {
+    display: none;
+}
+.restaurant {
+    background-color: blanchedalmond;
+    border-color: burlywood;
+    display: block;
+    padding: 25px;
+    border-radius: 50px;
+}
+#options {
+    text-align: center;
+}
+.oval {
+    background-color: bisque;
+    border-radius: 10%px;
+}
+.allergies {
+    display: inline-block;
+
+}
+input[type=checkbox] {
+    display: none;
+}
+:checked + label {
+    font-weight: bold;
+    background-color: orchid;
+}
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
