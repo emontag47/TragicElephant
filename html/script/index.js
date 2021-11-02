@@ -3,6 +3,7 @@ var allergies = ["sesame", "treenut", "peanut", "soybean",
              "milk", "egg", "shellfish", "fish", "wheat"];
 var input = {selection: []};
 
+/*
 $("#search").click(function () {
     currentSelection = [];
     input.selection = [];
@@ -14,18 +15,43 @@ $("#search").click(function () {
     var json = JSON.stringify(input);
     // Call an API here
 });
+*/
 
+$("#search").click(function() {
+    var rest = $("#restaurantName").value;
+
+});
 
 
 var app = new Vue({
     el: "#app",
     data: {
+        restaurant: "",
         results: [
-            {url: "mgoblue.com", distance: "3.4 miles"},
-            {url: "mgoblue.com", distance: "3.4 miles"},
-            {url: "mgoblue.com", distance: "3.4 miles"},
-            {url: "mgoblue.com", distance: "3.4 miles"}
+            {restaurant_name: "iHop",
+             meals: [
+                {allergens: ["sesame", "sausage"],
+                 description: "A sausage muffin thing"},
+                {allergens: ["egg", "almonds"],
+                 description: "Almond shaving omelet"}
+             ]},
+
         ]
+    },
+    methods: {
+        async search() {
+            const {url} = window.location.href
+            console.log("Searched");
+            console.log(this.restaurant);
+            fetch("http://127.0.0.1:8000/api/" + this.restaurant)
+                .then((response) => {
+                this.results = response.json();
+                })
+                .catch((error) =>{
+                    console.log(error);
+                });
+
+        }
     }
 });
 

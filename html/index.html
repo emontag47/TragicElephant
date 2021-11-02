@@ -7,9 +7,11 @@
     <link rel="stylesheet" type="text/css" href="css/index.css" />
 </head>
 <body>
+<div id="app">
 <div>
     <div><h1>Tragic Elephant</h1></div>
     <div class="container-fluid">
+    <!--
     <div id="show-options" class="text-center">       
         <input type="checkbox"  class="btn-check" name="allergy" id="sesame" value="sesame" />
         <label class="btn btn-outline-secondary" for="sesame">Sesame</label>
@@ -30,27 +32,41 @@
         <input type="checkbox" class="btn-check" name="allergy" id="wheat" value="wheat">
         <label class="btn btn-outline-secondary" for="wheat">Wheat</label>
     </div>
+    -->
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Restaurant" v-model="restaurant">
+    </div>
     </div>
 </div>
 <div class="container text-center">
-    <button type="button" class="btn btn-dark" id="search">Search Restaurants</button>
+    <button type="button" class="btn btn-dark" id="search" v-on:click="search">Search Restaurants</button>
 </div>
-<div>
-    <div id="app">
-        
+<div>        
     <div>
         <div><h1>Results:</h1></div>
-        <div id="results" style="display:none;">
+        <div id="results">
             <ul class="valid-restaurants">
                 <li v-for="restaurant in results">
-                    <div class="restaurant container-fluid"> 
-                        {{ restaurant.url}}
-                        {{ restaurant.distance}}
+                    <div class="container-fluid"> 
+                        {{restaurant.restaurant_name}}
+                        <ul>
+                            <li v-for="meal in restaurant.meals">
+                            {{meal.description}}
+                            <ul>
+                                <li v-for="allergen in meal.allergens">
+                                {{allergen}}
+                                </li>
+                            </ul>
+                            </li>
+
+                        </ul>
+
                     <div>
                 <li>
             </ul>
         </div>
     </div>
+</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <script src="script/jquery-3.6.0.js"></script>

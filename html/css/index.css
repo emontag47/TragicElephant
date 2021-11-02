@@ -4,9 +4,7 @@
 .allergen-clicked {
     background-color: aqua;
 }
-#results {
-    display: none;
-}
+
 .restaurant {
     background-color: blanchedalmond;
     border-color: burlywood;
