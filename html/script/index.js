@@ -17,10 +17,6 @@ $("#search").click(function () {
 });
 */
 
-$("#search").click(function() {
-    var rest = $("#restaurantName").value;
-});
-
 
 var app = new Vue({
     el: "#app",
@@ -36,6 +32,15 @@ var app = new Vue({
                 {allergens: [],
                  description: "A completely allergy-free pancake"}
              ]},
+             {restaurant_name: "MI Burger",
+              meals: [
+                {allergens: ["wheat"],
+                 description: "A plain hamburger"},
+                {allergens: ["bacon", "cheese"],
+                 description: "A bacon hamburger"},
+                {allergens: ["egg"],
+                 description: "French fries"}
+             ]}
 
         ]
     },
@@ -44,8 +49,9 @@ var app = new Vue({
             const {url} = window.location.href
             console.log("Searched");
             console.log(this.restaurant);
-            fetch("http://127.0.0.1:8000/api/" + this.restaurant)
+            fetch("http://127.0.0.1:8000/api/" + this.restaurant, {mode: 'no-cors'})
                 .then((response) => {
+                    console.log(response);
                 this.results = response.json();
                 })
                 .catch((error) =>{
