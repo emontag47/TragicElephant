@@ -60,11 +60,11 @@
                         </div>
                         <ul>
 
-                            <li v-for="(meal, index) in restaurant.meals">
+                            <li v-for="(value, name, index) in restaurant.meals">
                             <div class="row">
                                 <div class="col">
-                                {{meal.description}}
-                                <div v-if="meal.allergens.length > 0">
+                                {{name}}
+                                <div v-if="value.allergens.length > 0">
                                     <button class="badge badge-danger" data-toggle="collapse" :data-target="'#meal' + restID + index" aria-expanded="false" :aria-controls="'#meal_' + index">Show allergens</button>
                                 </div>
                                 <div v-else>
@@ -76,7 +76,7 @@
                                 <div class="col-6">
                                 <div class="collapse" :id="'meal' + restID + index">
                                     <ul class="list-group centerText">
-                                        <li class="list-group-item list-group-item-warning" v-for="allergen in meal.allergens">
+                                        <li class="list-group-item list-group-item-warning" v-for="allergen in value.allergens">
                                         {{allergen}}
                                         </li>
                                     </ul>
