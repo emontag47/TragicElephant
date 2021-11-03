@@ -30,7 +30,7 @@ var app = new Vue({
             {restaurant_name: "iHop",
              meals: [
                 {allergens: ["sesame", "sausage"],
-                 description: "A sausage muffin thing"},
+                 description: "A sausage muffin thing that flies on wenesdays and knows who your mother is"},
                 {allergens: ["egg", "almonds"],
                  description: "Almond shaving omelet"},
                 {allergens: [],
@@ -51,6 +51,9 @@ var app = new Vue({
                 .catch((error) =>{
                     console.log(error);
                 });
+        },
+        test(index) {
+            console.log(index);
         }
     }
 });

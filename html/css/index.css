@@ -41,3 +41,12 @@ ul {
 .row {
     padding-top: 20px;
 }
+.centerText {
+    text-align: center;
+}
+.badge {
+    margin-left: 10px;
+}
+.badge-danger:hover {
+    background-color: #b30000;
+}
