@@ -9,8 +9,17 @@ from pydantic import BaseModel
 from bson import ObjectId
 from pydantic import BaseModel, Field, EmailStr
 from typing import Optional, List
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Handling MongoDB connection 
 myclient = MongoClient("mongodb://localhost:27017/")
@@ -49,6 +58,10 @@ class RestaurantModel(BaseModel):
     menus: list
     last_updated: str
 
+class RestaurantModelNew(BaseModel):
+
+    restaurant_name: str
+
 class OneRestaurantModel(BaseModel):
     
     restaurant_name: str
@@ -56,21 +69,21 @@ class OneRestaurantModel(BaseModel):
 
 
 # Base root returns the names of all of the restaurants in the database
-@app.get("/", response_description="List all restaurants", response_model=List[RestaurantModel])
-def read_root():
+@app.get("/", response_description="List all restaurants")
+def get_list_of_restaurants():
     """returns the names of all of the restaurants in the database"""
 
     info = []
     for x in mycol.find({"price_range_num":{'$gte':0}}, {"_id": 0}):
-      print(x["restaurant_name"])
-      info.append(x)
+      # print(x["restaurant_name"])
+      info.append(x["restaurant_name"])
     return info
 
 # Restaurant endpoint returns the restaurant name, meals, and potential allergens of the searched restaurant
 @app.get("/api/{restaurant}/", response_description="Show meals from searched restaurant", response_model=OneRestaurantModel)
 def get_restaurant(restaurant: str):
     """Returns the restaurant name, meals, and potential allergens of the searched restaurant"""
-
+    print("HELLO")
     # Return 404 if the restaurant is not in our database
     if (x := mycol.find_one({"restaurant_name": { "$regex": restaurant, "$options" :'i' }}, {"_id": 0})) is None:
       raise HTTPException(status_code=404, detail=f"Restaurant {restaurant} not found")
@@ -82,15 +95,16 @@ def get_restaurant(restaurant: str):
         for i in b["menu_items"]:
           newMeal = i["name"].lower()
           newDesc = i["description"].lower()
-          fullMeal = "{} {}".format(i["name"], i["description"])
+          fullMeal = "{} {}".format(newMeal, newDesc)
           meals[newMeal] = {"allergens": [], "description": newDesc}
           for allergen in allergens:
-            if fullMeal.find(allergen) > 0:
+            if fullMeal.find(allergen) > -1:
               meals[newMeal]["allergens"].append(allergen)
     
     info = {
       "restaurant_name": x["restaurant_name"],
       "meals": meals
     }
+    # print(info)
 
     return info

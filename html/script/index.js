@@ -49,10 +49,11 @@ var app = new Vue({
             const {url} = window.location.href
             console.log("Searched");
             console.log(this.restaurant);
-            fetch("http://127.0.0.1:8000/api/" + this.restaurant, {mode: 'no-cors'})
+            fetch("http://127.0.0.1:8000/api/" + this.restaurant + "/")
                 .then((response) => {
                     console.log(response);
                 this.results = response.json();
+                console.log(this.results);
                 })
                 .catch((error) =>{
                     console.log(error);
