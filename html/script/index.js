@@ -3,6 +3,7 @@ var allergies = ["sesame", "treenut", "peanut", "soybean",
              "milk", "egg", "shellfish", "fish", "wheat"];
 var input = {selection: []};
 
+
 /*
 $("#search").click(function () {
     currentSelection = [];
@@ -21,7 +22,10 @@ $("#search").click(function () {
 var app = new Vue({
     el: "#app",
     data: 
-        {results: [{
+        {displayResults: false,
+         restaurant: "",
+         results: [
+{
   "restaurant_name": "Fleetwood Diner",
   "meals": {
     "all day breakfast special": {
@@ -661,25 +665,30 @@ var app = new Vue({
       "description": "please contact the restaurant for the seasonal selection."
     }
   }
-}]}
+}
+
+        ]}
     ,
     methods: {
         async search() {
             const {url} = window.location.href
-            console.log("Searched");
+            this.displayResults = true;
             console.log(this.restaurant);
+            /*
             fetch("http://127.0.0.1:8000/api/" + this.restaurant + "/")
                 .then((response) => {
                     console.log(response);
-                this.results = response.json();
-                console.log(this.results);
+                    this.results = response.json();
+                    console.log(this.results);
                 })
                 .catch((error) =>{
                     console.log(error);
                 });
+                */
+             
         },
-        test(index) {
-            console.log(index);
+        checkDisplay() {
+            return this.displayResults;
         }
     }
 });
