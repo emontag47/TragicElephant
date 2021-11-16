@@ -14,35 +14,26 @@
 <div>
     <div><h1>Tragic Elephant</h1></div>
     <div class="container-fluid">
-    <!--
-    <div id="show-options" class="text-center">       
-        <input type="checkbox"  class="btn-check" name="allergy" id="sesame" value="sesame" />
-        <label class="btn btn-outline-secondary" for="sesame">Sesame</label>
-        <input type="checkbox" class="btn-check" name="allergy" id="treenut" value="treenut" />
-        <label class="btn btn-outline-secondary" for="treenut">Treenut</label>
-        <input type="checkbox" class="btn-check" name="allergy" id="peanut" value="peanut" />
-        <label class="btn btn-outline-secondary" for="peanut">Peanut</label>
-        <input type="checkbox" class="btn-check" name="allergy" id="soybean" value="soybean" />
-        <label class="btn btn-outline-secondary" for="soybean">Soybean</label>
-        <input type="checkbox" class="btn-check" name="allergy" id="milk" value="milk"/>
-        <label class="btn btn-outline-secondary" for="milk">Milk</label>
-        <input type="checkbox" class="btn-check" name="allergy" id="egg" value="egg" />
-        <label class="btn btn-outline-secondary" for="egg">Egg</label>
-        <input type="checkbox" class="btn-check" name="allergy" id="shellfish" value="shellfish">
-        <label class="btn btn-outline-secondary" for="shellfish">Shellfish</label>
-        <input type="checkbox" class="btn-check" name="allergy" id="fish" value="fish">
-        <label class="btn btn-outline-secondary" for="fish">Fish</label>
-        <input type="checkbox" class="btn-check" name="allergy" id="wheat" value="wheat">
-        <label class="btn btn-outline-secondary" for="wheat">Wheat</label>
+    
+    <div id="show-options" class="text-center">
+        <h3>Choose allergies</h3>
+        <ul>
+        <li v-for="allergen in allergies" style="display:inline;">
+            <input type="checkbox"  class="btn-check" :name="allergen.allergy" :id="allergen.allergy" :value="allergen.allergy" v-on:click="allergen.checked += 1"/>
+            <label class="btn btn-outline-secondary" :for="allergen.allergy">{{allergen.allergy}}</label>
+        </li>
+        </ul>
     </div>
-    -->
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Restaurant" v-model="restaurant">
+    <div class="text-center">
+        <h3>Search for specific restaurant</h3>
+        <div class="input-group mb-3">        
+            <input type="text" class="form-control" placeholder="Restaurant" v-model="restaurant" v-on:keyup.enter="search">
+        </div>
     </div>
     </div>
 </div>
 <div class="container text-center">
-    <button type="button" class="btn btn-dark" id="search" v-on:click="search">Search Restaurants</button>
+    <button type="button" class="btn btn-dark" id="search" v-on:click="search" v-on:keyup.enter="search">Search</button>
 </div>
 <div>        
     <div>
