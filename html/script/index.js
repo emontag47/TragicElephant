@@ -27,7 +27,7 @@ var app = new Vue({
             {allergy: "treenut", checked: 0},
             {allergy: "peanut", checked: 0},
             {allergy: "soybean", checked: 0},
-            {allergy: "milk", checked: 0},
+            {allergy: "dairy", checked: 0},
             {allergy: "egg", checked: 0},
             {allergy: "shellfish", checked: 0},
             {allergy: "fish", checked: 0},
@@ -88,16 +88,28 @@ var app = new Vue({
                 search = search.slice(0, -1);
             }
             
+            var self = this;
             // Make call to API  
+            console.log(self);
             fetch("http://127.0.0.1:8000/api/" + search)
-                .then((response) => {
-                    console.log(response);
-                    this.results = response.json();
-                    console.log(this.results);
+                .then((response) =>  response.json())
+                .then(contents => {
+                    var lisp = [];
+                    lisp.push(contents);
+                    self.results = lisp;
+                    
+                    // self.results = contents;
+                    
+                    // console.log(contents);
+                    console.log(self.results);
                 })
+                    // console.log(response);
+                    // self.results = response.json();
+                    // console.log(self.results);
                 .catch((error) =>{
                     console.log(error);
                 });
+                // console.log(obby);
         },
         checkDisplay() {
             return this.displayResults;

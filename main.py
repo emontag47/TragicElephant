@@ -31,7 +31,7 @@ allergens = ["milk", "eggs", "bass", "salmon", "cod", "crab", "lobster", "shrimp
 allergensDict = {
   "dairy": ["milk", "yogurt", "butter", "cream", "mayonnaise"],
   "cheese": ["mozzarella", "cheddar", "parmesan", "gouda", "swiss", "brie", "feta", "pepper jack", "montery jack", "provolone"],
-  "eggs": ["waffles", "pancakes", "egg", "eggnog", "mayonnaise"],
+  "egg": ["waffles", "pancakes", "eggs", "eggnog", "mayonnaise"],
   "fish": ["bass", "salmon", "tilapia", "cod"],
   "shellfish": ["shrimp", "crab", "lobster", "crayfish"],
   "nuts": ["peanuts", "almonds", "cashews", "pecans"],
@@ -106,7 +106,7 @@ def get_restaurant(restaurant: str):
 
 @app.get("/api/{restaurant}/allergy")
 def get_restaurant_allergy(restaurant: str, q: Optional[List[str]] = Query(None)):
-  """Returns meals from restaurant that don't contain selectedd allergens"""
+  """Returns meals from restaurant that don't contain selected allergens"""
   
   if (x := mycol.find_one({"restaurant_name": { "$regex": restaurant, "$options" :'i' }}, {"_id": 0})) is None:
       raise HTTPException(status_code=404, detail=f"Restaurant {restaurant} not found")
