@@ -29,17 +29,19 @@ mycol = mydb["Restaurants4"]
 # List of allergens to check against 
 allergens = ["milk", "eggs", "bass", "salmon", "cod", "crab", "lobster", "shrimp", "almonds", "walnuts", "pecans", "peanuts", "wheat", "soy", "ham", "bacon", "sausage", "steak", "chicken", "turkey", "cheese", "sunflower", "sesame", "poppy"]
 allergensDict = {
-  "dairy": ["milk", "yogurt", "butter", "cream", "mayonnaise"],
+  "dairy": ["milk", "yogurt", "butter", "cream", "mayonnaise", "mozzarella", "cheddar", "parmesan", "gouda", "swiss", "brie", "pepper jack", "montery jack", "provolone"],
   "cheese": ["mozzarella", "cheddar", "parmesan", "gouda", "swiss", "brie", "feta", "pepper jack", "montery jack", "provolone"],
-  "egg": ["waffles", "pancakes", "eggs", "eggnog", "mayonnaise"],
-  "fish": ["bass", "salmon", "tilapia", "cod"],
-  "shellfish": ["shrimp", "crab", "lobster", "crayfish"],
-  "nuts": ["peanuts", "almonds", "cashews", "pecans"],
-  "soy": ["tofu"],
-  "meat": ["chicken", "steak", "pepperoni", "turkey", "bacon", "pork", "ribs"],
+  "egg": ["waffles", "pancakes", "eggs", "eggnog", "mayonnaise", "omelette", "pudding", "custard", "hollandaise", "french toast", "ice cream", "marshmallow", "meatballs", "sorbet", "tortilla"],
+  "fish": ["bass", "salmon", "tilapia", "cod", "tuna", "seafood"],
+  "shellfish": ["shrimp", "crab", "lobster", "crayfish", "seafood"],
+  "peanut": ["peanuts"],
+  "tree nuts": ["almonds", "brazil nuts", "cashews", "chestnuts", "hazelnuts", "macadamia", "pecans", "pine", "pistachios", "walnuts"],
+  "soybean": ["tofu"],
+  "meat": ["chicken", "steak", "pepperoni", "turkey", "bacon", "pork", "ribs", "pastrami", "gabagool", "capicola", "duck", "beef", "lamb", "venison", "ham", "veal", "meatballs", "nougat"],
   "sunflower": [],
   "sesame": [],
   "poppy": [],
+  "wheat": ["toast", "bread", "pancake", "pancakes", "biscuit", "bun", "sandwich", "bagel", "brioche", "ciabatta", "muffin", "brownie", "flour"]
 }
 # Models to handle BSON data returned by MongoDB
 class PyObjectId(ObjectId):
@@ -79,9 +81,11 @@ class OneRestaurantModel(BaseModel):
     restaurant_name: str
     meals: dict
 
+# Add Restaurant phone and website
+
 
 # Base root returns the names of all of the restaurants in the database
-@app.get("/", response_description="List all restaurants")
+@app.get("/api/restaurants", response_description="List all restaurants")
 def get_list_of_restaurants():
     """returns the names of all of the restaurants in the database"""
 
@@ -116,6 +120,7 @@ def get_restaurant_allergy(restaurant: str, q: Optional[List[str]] = Query(None)
   meals = info["meals"]
 
   for meal in list(meals.keys()):
+    print(meal)
     foundAllergen = False
     allergens = meals[meal]["allergens"]
     for i in q:
@@ -140,10 +145,10 @@ def get_restaurant_helper(restaurant):
         fullMeal = "{} {}".format(newMeal.lower(), newDesc.lower())
         meals[newMeal] = {"allergens": [], "description": newDesc}
         for allergen in allergensDict:
-          if allergen in fullMeal:
+          if allergen in fullMeal and allergen not in meals[newMeal]["allergens"]:
             meals[newMeal]["allergens"].append(allergen)
           for i in allergensDict[allergen]:
-            if i in fullMeal:
+            if i in fullMeal and allergen not in meals[newMeal]["allergens"]:
               meals[newMeal]["allergens"].append(allergen)
   
   info = {

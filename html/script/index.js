@@ -24,13 +24,16 @@ var app = new Vue({
          restaurant: "",
          allergies: [
             {allergy: "sesame", checked: 0},
-            {allergy: "treenut", checked: 0},
-            {allergy: "peanut", checked: 0},
+            {allergy: "tree nuts", checked: 0},
+            {allergy: "peanuts", checked: 0},
             {allergy: "soybean", checked: 0},
             {allergy: "dairy", checked: 0},
+            {allergy: "cheese", checked: 0},
             {allergy: "egg", checked: 0},
             {allergy: "shellfish", checked: 0},
             {allergy: "fish", checked: 0},
+            {allergy: "meat", checked: 0},
+            {allergy: "sunflower", checked: 0},
             {allergy: "wheat", checked: 0}],
          results: [
 {
