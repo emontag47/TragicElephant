@@ -12,74 +12,84 @@
 <body>
 <div id="app">
 <div>
-    <div><h1>Tragic Elephant</h1></div>
+    <div class="container-fluid" id="website-name">
+    <div class="d-flex justify-content-center"><h1 id="title">Tragic Elephant</h1></div>
+    </div>
     <div class="container-fluid">
-    
     <div id="show-options" class="text-center">
-        <h3>Choose allergies</h3>
+        <h3>Choose allergies to filter against</h3>
         <ul>
         <li v-for="allergen in allergies" style="display:inline;">
             <input type="checkbox"  class="btn-check" :name="allergen.allergy" :id="allergen.allergy" :value="allergen.allergy" v-on:click="allergen.checked += 1"/>
-            <label class="btn btn-outline-secondary" :for="allergen.allergy">{{allergen.allergy}}</label>
+            <label class="btn btn-outline-info" :for="allergen.allergy">{{allergen.allergy}}</label>
         </li>
         </ul>
     </div>
     <div class="text-center">
-        <h3>Search for specific restaurant</h3>
+        <h3>Search for a restaurant</h3>
         <div class="input-group mb-3">        
-            <input type="text" class="form-control" placeholder="Restaurant" v-model="restaurant" v-on:keyup.enter="search">
+            <input type="text" class="form-control" placeholder="Restaurant" v-model="restaurant" v-on:keyup.enter="search(restaurant)">
         </div>
     </div>
     </div>
 </div>
 <div class="container text-center">
-    <button type="button" class="btn btn-dark" id="search" v-on:click="search" v-on:keyup.enter="search">Search</button>
+    <button type="button" class="btn btn-secondary" id="search" v-on:click="search(restaurant)" v-on:keyup.enter="search(restaurant)">Find restaurant</button>
+    <button type="button" class="btn btn-info" id="search-all" v-on:click="searchAll" v-on:keyup.enter="search(restaurant)">See all restaurants in the area</button>
 </div>
 <div>        
     <div>
-        <div><h1>Results:</h1></div>
+        <!--<div v-if="checkDisplay()"><h1>Results:</h1></div>-->
         <div id="results">
-            <ul class="valid-restaurants" v-if="checkDisplay()">
-                <li v-for="(restaurant, restID) in results">
-                    <div class="container-fluid"> 
-                        <div class="row">
-                            <div class="col" style="text-align:center;">
-                                <h1>
-                                {{restaurant.restaurant_name}}
-                                </h1>
-                            </div>
-                        </div>
-                        <ul>
-
-                            <li v-for="(value, name, index) in restaurant.meals">
+            <div v-if="searchType">
+                <ul v-if="checkDisplay()">
+                    <li class="btn btn-outline-dark restaurant-name" v-for="name in results" v-on:click="search(name)">
+                        <h2>{{name}}</h2>
+                    </li>
+                </ul>
+            </div>
+            <div v-else>
+                <ul class="valid-restaurants" v-if="checkDisplay()">
+                    <li v-for="(restaurant, restID) in results">
+                        <div class="container-fluid"> 
                             <div class="row">
-                                <div class="col">
-                                {{name}}
-                                <div v-if="value.allergens.length > 0">
-                                    <button class="badge badge-danger" data-toggle="collapse" :data-target="'#meal' + restID + index" aria-expanded="false" :aria-controls="'#meal_' + index">Show allergens</button>
-                                </div>
-                                <div v-else>
-                                    <button class="badge badge-success">Allergy-free</button>
-                                </div>
-                             </div>
-                             </div>
-                             <div class="row">
-                                <div class="col-6">
-                                <div class="collapse" :id="'meal' + restID + index">
-                                    <ul class="list-group centerText">
-                                        <li class="list-group-item list-group-item-warning" v-for="allergen in value.allergens">
-                                        {{allergen}}
-                                        </li>
-                                    </ul>
-                                </div>
-                                </div>
+                                <div class="col result-format">
+                                    <h1>
+                                    {{restaurant.restaurant_name}}
+                                    </h1>
                                 </div>
                             </div>
-                            </li>
-                        </ul>
-                    <div>
-                </li>
-            </ul>
+                            <ul>
+                                <li v-for="(value, name, index) in restaurant.meals">
+                                <div class="row">
+                                    <div class="col result-format">
+                                    {{name}}
+                                    <div v-if="value.allergens.length > 0">
+                                        <button class="badge badge-danger" data-toggle="collapse" :data-target="'#meal' + restID + index" aria-expanded="false" :aria-controls="'#meal_' + index">Show allergens</button>
+                                    </div>
+                                    <div v-else>
+                                        <button class="badge badge-success">Allergy-free</button>
+                                    </div>
+                                 </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-7 result-format">
+                                    <div class="collapse" :id="'meal' + restID + index">
+                                        <ul class="list-group centerText">
+                                            <li class="list-group-item list-group-item-warning" v-for="allergen in value.allergens">
+                                            {{allergen}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                </li>
+                            </ul>
+                        <div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

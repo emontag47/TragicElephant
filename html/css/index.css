@@ -12,6 +12,10 @@
     padding: 25px;
     border-radius: 50px;
 }
+.restaurant-name {
+    margin: 10px;
+    cursor: pointer;
+}
 #options {
     text-align: center;
 }
@@ -28,7 +32,8 @@ input[type=checkbox] {
 }
 :checked + label {
     font-weight: bold;
-    background-color: orchid;
+    background-color: #2fc4d4;
+    color: white;
 }
 ul {
     list-style: none;
@@ -41,6 +46,17 @@ ul {
 .row {
     padding-top: 20px;
 }
+#website-name {
+    padding: 10px;
+    background-color: #a7a7b5;
+
+}
+#title {
+    font-size: 500%;
+}
+#show-options {
+    margin-top: 10px;
+}
 .centerText {
     text-align: center;
 }
@@ -49,4 +65,7 @@ ul {
 }
 .badge-danger:hover {
     background-color: #b30000;
+}
+.result-format {
+    margin-left: 20%;
 }
