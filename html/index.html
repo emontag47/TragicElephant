@@ -41,7 +41,7 @@
     <div>
         <!--<div v-if="checkDisplay()"><h1>Results:</h1></div>-->
         <div id="results">
-            <div v-if="searchType">
+            <div v-if="searchType" class="name-format">
                 <ul v-if="checkDisplay()">
                     <li class="btn btn-outline-dark restaurant-name" v-for="name in results" v-on:click="search(name)">
                         <h2>{{name}}</h2>

@@ -1,7 +1,7 @@
 // Declare global variables for input
 var input = {selection: []};
 /*
-{[
+[
   "Panera Bread",
   "Subway",
   "Auntie Anne's",
@@ -39,7 +39,7 @@ var input = {selection: []};
   "Five Guys",
   "Amer's",
   "HopCat"
-]}
+]
 */
 /*
 {
@@ -104,33 +104,43 @@ var app = new Vue({
             {allergy: "meat", checked: 0},
             {allergy: "sunflower", checked: 0},
             {allergy: "wheat", checked: 0}],
-         results: [{
-  "restaurant_name": "Jimmy John's",
-  "meals": {
-    "pepe": {
-      "allergens": [
-        "ham",
-        "cheese"
-      ],
-      "description": "real applewood smoked ham and provolone cheese, garnished with lettuce, tomato, and mayo"
-    },
-    "sliced cucumber": {
-      "allergens": [],
-      "description": ""
-    },
-    "dijon mustard": {
-      "allergens": [],
-      "description": ""
-    },
-    "the j j gargantuan": {
-      "allergens": [
-        "ham",
-        "turkey"
-      ],
-      "description": "this sandwich was invented by jimmy john's brother huey. it's huge enough to feed the hungriest of all humans tons of genoa salami, sliced smoked ham, capicola, toast beef, turkey and provolone, jammed into one of our homemade french buns then smothered with onions, mayo, lettuce, tomato and homemade italian dressing"
-    }
-  }
-}]
+         results: [  "Panera Bread",
+  "Subway",
+  "Auntie Anne's",
+  "Villa Fresh Italian Kitchen",
+  "Wendy's",
+  "Tian Chu",
+  "Pita Kabob Grill",
+  "Diag Pizza & Subs",
+  "Ashley's Restaurant & Pub",
+  "Ashley's",
+  "Hunter House Hamburgers",
+  "Iorio's Gelateria",
+  "New York Pizza Depot",
+  "Asian Legend",
+  "The Original Cottage Inn",
+  "Comet Coffee",
+  "Espresso Royale",
+  "NeoPapalis",
+  "Bruegger's",
+  "Noodles & Company",
+  "Madras Masala",
+  "Franks Restaurant",
+  "Silvio's Organic Pizza",
+  "Cottage Inn Pizza",
+  "Jimmy John's",
+  "Red Hawk Bar & Grill",
+  "Yogurtrush",
+  "Bert's Cafe",
+  "Panera Bread",
+  "Panera Bread",
+  "Bruegger's Bagels",
+  "Sushi",
+  "Mama Satto",
+  "Poke Poke - Sushi Unrolled",
+  "Five Guys",
+  "Amer's",
+  "HopCat"]
         },
     methods: {
         async search(intro) {
