@@ -29,15 +29,15 @@ mycol = mydb["Restaurants4"]
 # List of allergens to check against 
 allergens = ["milk", "eggs", "bass", "salmon", "cod", "crab", "lobster", "shrimp", "almonds", "walnuts", "pecans", "peanuts", "wheat", "soy", "ham", "bacon", "sausage", "steak", "chicken", "turkey", "cheese", "sunflower", "sesame", "poppy"]
 allergensDict = {
-  "dairy": ["milk", "yogurt", "butter", "cream", "mayonnaise", "mozzarella", "cheddar", "parmesan", "gouda", "swiss", "brie", "pepper jack", "montery jack", "provolone"],
-  "cheese": ["mozzarella", "cheddar", "parmesan", "gouda", "swiss", "brie", "feta", "pepper jack", "montery jack", "provolone"],
-  "egg": ["waffles", "pancakes", "eggs", "eggnog", "mayonnaise", "omelette", "pudding", "custard", "hollandaise", "french toast", "ice cream", "marshmallow", "meatballs", "sorbet", "tortilla"],
-  "fish": ["bass", "salmon", "tilapia", "cod", "tuna", "seafood"],
+  "dairy": ["caesar", "cheese", "milk", "yogurt", "butter", "cream", "mayonnaise", "mozzarella", "cheddar", "parmesan", "gouda", "swiss", "brie", "pepper jack", "montery jack", "provolone", "asiago", "latte", "macchiato", "cappuccino", "chocolate"],
+  "cheese": ["mozzarella", "cheddar", "parmesan", "gouda", "swiss", "brie", "feta", "pepper jack", "montery jack", "provolone", "asiago"],
+  "egg": ["caesar", "waffles", "pancakes", "eggs", "eggnog", "mayonnaise", "omelette", "pudding", "custard", "hollandaise", "french toast", "ice cream", "marshmallow", "meatballs", "sorbet", "tortilla"],
+  "fish": ["caesar", "bass", "salmon", "tilapia", "cod", "tuna", "seafood"],
   "shellfish": ["shrimp", "crab", "lobster", "crayfish", "seafood"],
   "peanut": ["peanuts"],
   "tree nuts": ["almonds", "brazil nuts", "cashews", "chestnuts", "hazelnuts", "macadamia", "pecans", "pine", "pistachios", "walnuts"],
   "soybean": ["tofu"],
-  "meat": ["chicken", "steak", "pepperoni", "turkey", "bacon", "pork", "ribs", "pastrami", "gabagool", "capicola", "duck", "beef", "lamb", "venison", "ham", "veal", "meatballs", "nougat"],
+  "meat": ["chicken", "steak", "pepperoni", "turkey", "bacon", "pork", "ribs", "pastrami", "gabagool", "capicola", "duck", "beef", "lamb", "venison", "ham", "veal", "meatballs", "wings"],
   "sunflower": [],
   "sesame": [],
   "poppy": [],
@@ -137,6 +137,7 @@ def get_restaurant_helper(restaurant):
 
   # Sort through data from the database to format data and return info above
   meals = {}
+  print("HELLLLO")
   for a in restaurant["menus"]:
     for b in a["menu_sections"]:
       for i in b["menu_items"]:
@@ -145,10 +146,16 @@ def get_restaurant_helper(restaurant):
         fullMeal = "{} {}".format(newMeal.lower(), newDesc.lower())
         meals[newMeal] = {"allergens": [], "description": newDesc}
         for allergen in allergensDict:
+          print(meals[newMeal])
           if allergen in fullMeal and allergen not in meals[newMeal]["allergens"]:
+            print("Tragic", newMeal)
+            if newMeal == "blend 333" or newMeal == "Blend 333":
+                print("here", fullMeal, allergen)
+            print(allergen)
             meals[newMeal]["allergens"].append(allergen)
           for i in allergensDict[allergen]:
             if i in fullMeal and allergen not in meals[newMeal]["allergens"]:
+              print ("boeke", meals[newMeal], i)
               meals[newMeal]["allergens"].append(allergen)
   
   info = {
