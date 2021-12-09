@@ -199,9 +199,9 @@ var app = new Vue({
             fetch("http://127.0.0.1:8000/api/restaurants")
                 .then((response) =>  response.json())
                 .then(contents => {
-                    var lisp = [];
-                    lisp.push(contents);
-                    self.results = lisp;
+                    // var lisp = [];
+                    // lisp.push(contents);
+                    self.results = contents;
                     
                     console.log(self.results);
                 })
